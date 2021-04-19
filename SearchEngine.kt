@@ -33,13 +33,13 @@ class SearchEngine(dataSource: String) {
             searchStrategy: Strategy,
             query: List<String>
         ): List<String> {
-            val validItemsIndexes = getValidBooksIndexes(searchStrategy, query, itemsInvertedIndex, items.size)
+            val validItemsIndexes = getValidItemsIndexes(searchStrategy, query, itemsInvertedIndex, items.size)
             val validItems = mutableListOf<String>()
             validItemsIndexes.forEach { validItems.add(items[it]) }
             return validItems
         }
 
-        private fun getValidBooksIndexes(
+        private fun getValidItemsIndexes(
             searchStrategy: Strategy,
             query: List<String>,
             itemsInvertedIndex: MutableMap<String, MutableSet<Int>>,
@@ -79,7 +79,11 @@ class SearchEngine(dataSource: String) {
         fun getUserChoice(): Int {
             var userChoice = -1
             while (true) {
-                userChoice = readLine()!!.toInt()
+                try {
+                    userChoice = readLine()!!.toInt()
+                } catch (e: NumberFormatException) {
+                    continue
+                }
                 if (userChoice in 0..menu.lastIndex) {
                     break;
                 }
